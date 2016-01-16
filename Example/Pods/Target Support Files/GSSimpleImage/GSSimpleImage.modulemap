@@ -1,0 +1,6 @@
+framework module GSSimpleImage {
+  umbrella header "GSSimpleImage-umbrella.h"
+
+  export *
+  module * { export * }
+}

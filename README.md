@@ -9,6 +9,13 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+**GSSimpleImageView** add full screen when you tap UIImageView, and tap again to exit full screen.
+
+```
+let imageView = GSSimpleImageView(frame: CGRectMake(20, 100, 200, 200))
+imageView.image = UIImage(named: "test2.png")
+self.view.addSubview(imageView)
+```
 ## Requirements
 
 ## Installation

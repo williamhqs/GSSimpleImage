@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import GSSimpleImage
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        let imageView = GSSimpleImageView(frame: CGRectMake(20, 100, 200, 200))
+        imageView.image = UIImage(named: "test2.png")
+        self.view.addSubview(imageView)
     }
 
     override func didReceiveMemoryWarning() {
