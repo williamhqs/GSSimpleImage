@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E8DCBCBAE9820AD601D86B61'
+               BlueprintIdentifier = '3A5B0B23D4EA628416B32D67'
                BlueprintName = 'GSSimpleImage'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'GSSimpleImage.framework'>

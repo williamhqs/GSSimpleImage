@@ -3,6 +3,7 @@ use_frameworks!
 
 target 'GSSimpleImage_Example', :exclusive => true do
   pod "GSSimpleImage", :path => "../"
+  pod 'MBProgressHUD', '~> 0.9.2'
 end
 
 target 'GSSimpleImage_Tests', :exclusive => true do

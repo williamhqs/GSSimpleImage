@@ -7,16 +7,17 @@
 //
 
 import UIKit
-
-//protocol GSSimpleImageViewDelegate {
-//    
-//}
-
-public class GSSimpleImageView: UIImageView {
+import MBProgressHUD
+public protocol GSSimpleImageViewDelegate {
     
-//    var delegate: GSSimpleImageViewDelegate?
+}
+
+public class GSSimpleImageView: UIImageView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    public var delegate: GSSimpleImageViewDelegate?
  
     var bgView: UIView!
+    var bgViewController: UIViewController!
     
     public var animated: Bool = true
     
@@ -33,7 +34,6 @@ public class GSSimpleImageView: UIImageView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.addTapGesture()
-        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: Private methods
@@ -42,22 +42,39 @@ public class GSSimpleImageView: UIImageView {
         self.addGestureRecognizer(tap)
         self.userInteractionEnabled = true
     }
+    
+    func addLongPressGesture(view:UIView) {
+        let longPress = UILongPressGestureRecognizer(target: self, action: "popupAlbum:")
+        longPress.minimumPressDuration = 0.5
+        view.addGestureRecognizer(longPress)
+    }
+    
     //MARK: Actions of Gestures
     func exitFullScreen () {
         bgView.removeFromSuperview()
     }
 
     func fullScreenMe() {
-
-        if let window = UIApplication.sharedApplication().delegate?.window {
+if let del = delegate as? UIViewController {
+    
+    
+            bgViewController = UIViewController()
+            
+            
+            
             bgView = UIView(frame: UIScreen.mainScreen().bounds)
+            bgViewController.view.addSubview(bgView)
             bgView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "exitFullScreen"))
+            self.addLongPressGesture(bgView)
             bgView.backgroundColor = UIColor.blackColor()
             let imageV = UIImageView(image: self.image)
             imageV.frame = bgView.frame
             imageV.contentMode = .ScaleAspectFit
             self.bgView.addSubview(imageV)
-            window?.addSubview(bgView)
+//            
+
+            del.view.window?.addSubview(bgView)
+//            window?.addSubview(bgView)
             
             if animated {
                 var sx:CGFloat=0, sy:CGFloat=0
@@ -72,6 +89,36 @@ public class GSSimpleImageView: UIImageView {
                     imageV.transform = CGAffineTransformMakeScale(1, 1)
                 })
             }
+            
+//            window.makeKeyAndVisible()
+            
+    
+        }
+    }
+    
+    func popupAlbum(longPressGesture: UILongPressGestureRecognizer) {
+       
+        if (longPressGesture.state == UIGestureRecognizerState.Began) {
+            let window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            window.rootViewController = bgViewController
+            window.makeKeyAndVisible()
+            let alertController = UIAlertController()
+            let action = UIAlertAction(title: "保存到相册", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
+//                UIImageWriteToSavedPhotosAlbum(, nil, nil, nil)
+                MBProgressHUD.showHUDAddedTo(self.bgViewController.view, animated: true)
+                UIImageWriteToSavedPhotosAlbum(self.image!, self, "image:didFinishSavingWithError:contextInfo:", nil)
+            })
+            let cancel = UIAlertAction(title: "取消", style: UIAlertActionStyle.Default, handler: nil)
+            alertController.addAction(action)
+            alertController.addAction(cancel)
+            window.rootViewController!.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
+        if error == nil {
+            MBProgressHUD.hideAllHUDsForView(self.bgViewController.view, animated: true)
+            self.exitFullScreen()
         }
     }
 

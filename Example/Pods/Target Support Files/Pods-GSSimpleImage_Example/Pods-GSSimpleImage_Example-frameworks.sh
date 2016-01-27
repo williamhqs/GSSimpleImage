@@ -85,7 +85,9 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-GSSimpleImage_Example/GSSimpleImage.framework"
+  install_framework "Pods-GSSimpleImage_Example/MBProgressHUD.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-GSSimpleImage_Example/GSSimpleImage.framework"
+  install_framework "Pods-GSSimpleImage_Example/MBProgressHUD.framework"
 fi
