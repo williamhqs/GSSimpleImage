@@ -91,9 +91,17 @@ if let del = delegate as? UIViewController {
             }
             
 //            window.makeKeyAndVisible()
-            
-    
         }
+    }
+    
+    func showProgressAnimation() {
+        let hud = MBProgressHUD.showHUDAddedTo(self.bgViewController.view, animated: true)
+        hud.mode = MBProgressHUDMode.CustomView
+        hud.color = UIColor.lightGrayColor()
+        hud.customView = UIImageView(image: UIImage(named:"Checkmark"))
+        hud.square = true
+        hud.labelText = "Done"
+        hud.hide(true, afterDelay: 3)
     }
     
     func popupAlbum(longPressGesture: UILongPressGestureRecognizer) {
@@ -105,7 +113,7 @@ if let del = delegate as? UIViewController {
             let alertController = UIAlertController()
             let action = UIAlertAction(title: "保存到相册", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
 //                UIImageWriteToSavedPhotosAlbum(, nil, nil, nil)
-                MBProgressHUD.showHUDAddedTo(self.bgViewController.view, animated: true)
+                self.showProgressAnimation()
                 UIImageWriteToSavedPhotosAlbum(self.image!, self, "image:didFinishSavingWithError:contextInfo:", nil)
             })
             let cancel = UIAlertAction(title: "取消", style: UIAlertActionStyle.Default, handler: nil)
